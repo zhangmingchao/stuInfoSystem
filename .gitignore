@@ -3,3 +3,4 @@ target
 application.yml
 demo.iml
 src/main/resources/application.yml
+./target/
