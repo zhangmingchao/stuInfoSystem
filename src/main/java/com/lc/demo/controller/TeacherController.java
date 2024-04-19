@@ -293,6 +293,13 @@ public class TeacherController {
     {
         return "tea/rankbyclass";
     }
+  
+    //成绩分析
+    @GetMapping(value ="/tea/scoreAnalysis")
+    public String scoreAnalysispage(Model model)
+    {
+        return "tea/scoreAnalysis";
+    }
 
     //处理根据班级查询学生排名事务
     @GetMapping(value = "/tea/selectRankbyclass")
