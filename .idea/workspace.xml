@@ -6,11 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="0de1a963-a7e7-4645-b4cf-8a4350de4577" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/tea/scoreAnalysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/tea/scoreAnalysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lc/demo/controller/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lc/demo/controller/TeacherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/controller/TeacherController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/controller/TeacherController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/service/ResultssService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/service/ResultssService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/service/impl/ResultssServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/service/impl/ResultssServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/tea/scoreAnalysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/tea/scoreAnalysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/lc/demo/DemoApplicationTests.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +64,13 @@
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="stuInfoSystem" />
       <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lc.demo.DemoApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

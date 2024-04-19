@@ -74,26 +74,24 @@
             <div class="search-bar">
               <div class="search-bar__item">
                 <label>学科：</label>
-                <select class="form-control">
+                <select class="form-control" name="subName">
                   <option
                     th:each="e:${subjectList}"
                     th:selected="${defaultSubNam!=null}?${e.subName eq defaultSubNam}"
                     th:value="${e.subName}"
                     th:text="${e.subName}"
-                    name="subName"
                   ></option>
                 </select>
               </div>
 
               <div class="search-bar__item">
                 <label>学期：</label>
-                <select class="form-control">
+                <select class="form-control" name="subTerm">
                   <option
                     th:each="e:${termList}"
                     th:selected="${defaultTeam!=null}?${e.subTerm eq defaultTeam}"
                     th:value="${e.subTerm}"
                     th:text="${e.subTerm}"
-                    name="subTerm"
                   ></option>
                 </select>
               </div>

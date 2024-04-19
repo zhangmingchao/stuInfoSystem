@@ -330,6 +330,9 @@ public class TeacherController {
     @GetMapping(value ="/tea/scoreAnalysis")
     public String scoreAnalysispage(Model model,@Param("subName") String subName,@Param("subTerm")String subTerm)
     {
+        // 查看传入的参数
+        System.out.println("subName: " + subName);
+        System.out.println("subTerm: " + subTerm);
         List<Subject> list = subjectService.findList();
 
         List<Subject> subjectList = new ArrayList<>();
