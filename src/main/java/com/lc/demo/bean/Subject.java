@@ -58,7 +58,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject{" +
+        return "{" +
                 "subId='" + subId + '\'' +
                 ", subName='" + subName + '\'' +
                 ", subTerm='" + subTerm + '\'' +
