@@ -8,6 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/tea/scoreAnalysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/tea/scoreAnalysis.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/controller/TeacherController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/controller/TeacherController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/service/ResultssService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/service/ResultssService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lc/demo/service/impl/ResultssServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lc/demo/service/impl/ResultssServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/tea/scoreAnalysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/tea/scoreAnalysis.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
