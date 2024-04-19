@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -301,6 +302,13 @@ public class TeacherController {
         List<Subject> list = subjectService.findList();
         model.addAttribute("subjectList", list);
         model.addAttribute("termList", list);
+        if (!ObjectUtils.isEmpty(list)) {
+            String subName = list.get(0).getSubName();
+            String subTerm = list.get(0).getSubTerm();
+            model.addAttribute("defaultSubNam",subName);
+            model.addAttribute("defaultTeam",subTerm);
+        }
+
         return "tea/scoreAnalysis";
     }
 
