@@ -513,3 +513,6 @@ INSERT INTO `teacher` VALUES ('2321', '刘备', '123', '1', '18876627223');
 INSERT INTO `teacher` VALUES ('2341', '诸葛亮', '123', '1', '18876627223');
 INSERT INTO `teacher` VALUES ('3241', '张飞', '123', '1', '18876627222');
 INSERT INTO `teacher` VALUES ('5324', '曹操', '123', '1', '18876627223');
+
+
+
