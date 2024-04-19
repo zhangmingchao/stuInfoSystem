@@ -16,6 +16,30 @@
       th:href="@{/asserts/css/dashboard.css}"
       rel="stylesheet"
     />
+
+    <style>
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+      }
+
+      .search-bar label {
+        margin: 0;
+      }
+
+      .search-bar .search-bar__item {
+        display: flex;
+        align-items: center;
+        gap: 0 10px;
+        flex: 1;
+      }
+
+      .search-bar .search-bar__item .form-control {
+        flex: 1;
+        width: initial;
+      }
+    </style>
   </head>
 
   <body>
@@ -27,7 +51,35 @@
         ></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <h1>MAIN</h1>
+          <form method="get" th:action="@{/tea/scoreAnalysis}">
+            <div class="search-bar mb-3">
+              <div class="search-bar__item">
+                <label>学科：</label>
+                <select class="form-control">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+
+              <div class="search-bar__item">
+                <label>学期</label>
+                <select class="form-control">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+
+              <button class="btn btn-outline-secondary" type="submit">
+                查询
+              </button>
+            </div>
+          </form>
         </main>
       </div>
     </div>
