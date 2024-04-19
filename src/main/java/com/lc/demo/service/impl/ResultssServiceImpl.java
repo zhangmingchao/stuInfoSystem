@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ResultssServiceImpl
@@ -93,5 +94,28 @@ public class ResultssServiceImpl  implements ResultssService {
             r.setResmap(reamap);
         }
         return ranks;
+    }
+
+    @Override
+    public Map<String, Object> getChartData(String subName, String subTerm) {
+        List<Resultss> resultsses = resultMapper.selectAllResult();
+        List<Resultss> collect = resultsses.stream().filter(item -> subName.equals(item.getSubName()) && subTerm.equals(item.getResTerm())).collect(Collectors.toList());
+        Long fail = 0L;
+        Long pass =  0L;
+        Long sup = 0L;
+        for (Resultss resultss : collect) {
+            if (resultss.getResNum()>=0 && resultss.getResNum() <= 59) {
+                fail++;
+            } else if (resultss.getResNum()>=60 && resultss.getResNum() <= 85) {
+                pass++;
+            } else {
+                sup++;
+            }
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("fail",fail);
+        map.put("pass",pass);
+        map.put("super",sup);
+        return map;
     }
 }

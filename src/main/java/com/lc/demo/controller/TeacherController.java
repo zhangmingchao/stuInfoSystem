@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName TeacherController
@@ -297,20 +299,38 @@ public class TeacherController {
   
     //成绩分析
     @GetMapping(value ="/tea/scoreAnalysis")
-    public String scoreAnalysispage(Model model)
+    public String scoreAnalysispage(Model model,@Param("subName") String subName,@Param("subTerm")String subTerm)
     {
         List<Subject> list = subjectService.findList();
-        model.addAttribute("subjectList", list);
-        model.addAttribute("termList", list);
+
+        List<Subject> subjectList = new ArrayList<>();
+        List<Subject> termList = new ArrayList<>();
+        Set<String> subSet = new HashSet<>();
+        Set<String> termSet = new HashSet<>();
+        for (Subject subject : list) {
+            if (!subSet.contains(subject.getSubName())) {
+                subjectList.add(subject);
+                subSet.add(subject.getSubName());
+            }
+            if (!termSet.contains(subject.getSubTerm())) {
+                termList.add(subject);
+                termSet.add(subject.getSubTerm());
+            }
+        }
+        model.addAttribute("subjectList", subjectList);
+        model.addAttribute("termList", termList);
         if (!ObjectUtils.isEmpty(list)) {
-            String subName = list.get(0).getSubName();
-            String subTerm = list.get(0).getSubTerm();
+            if (StringUtils.isEmpty(subTerm)) {
+                subTerm = list.get(0).getSubTerm();
+            }
+            if (StringUtils.isEmpty(subName)) {
+                subName = list.get(0).getSubName();
+            }
+            //需要查询数据库了
+
             model.addAttribute("defaultSubNam",subName);
             model.addAttribute("defaultTeam",subTerm);
-            Map<String,Object> map = new HashMap<>();
-            map.put("fail",1000);
-            map.put("super",100);
-            map.put("pass",500);
+            Map<String,Object> map = resultssService.getChartData(subName,subTerm);
             model.addAttribute("data",map);
         }
 

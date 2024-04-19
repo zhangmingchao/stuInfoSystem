@@ -4,6 +4,7 @@ import com.lc.demo.bean.Rank;
 import com.lc.demo.bean.Resultss;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ResultssService
@@ -31,4 +32,6 @@ public interface ResultssService {
     List<Rank> selectRankByTerm(String resTerm);
 
     List<Rank> selectRankByTermAndStuClass(String resTerm,String stuClass);
+
+    Map<String, Object> getChartData(String subName, String subTerm);
 }

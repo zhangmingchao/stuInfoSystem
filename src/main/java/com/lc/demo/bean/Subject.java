@@ -55,4 +55,13 @@ public class Subject {
 
     public Subject() {
     }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "subId='" + subId + '\'' +
+                ", subName='" + subName + '\'' +
+                ", subTerm='" + subTerm + '\'' +
+                '}';
+    }
 }
