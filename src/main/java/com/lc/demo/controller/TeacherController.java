@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
 import com.lc.demo.mapper.ResultMapper;
 import com.lc.demo.mapper.TeacherMapper;
-import com.lc.demo.service.ClassService;
-import com.lc.demo.service.ResultssService;
-import com.lc.demo.service.StudentService;
-import com.lc.demo.service.TeacherService;
+import com.lc.demo.service.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -293,11 +290,17 @@ public class TeacherController {
     {
         return "tea/rankbyclass";
     }
+
+    @Autowired
+    private SubjectService subjectService;
   
     //成绩分析
     @GetMapping(value ="/tea/scoreAnalysis")
     public String scoreAnalysispage(Model model)
     {
+        List<Subject> list = subjectService.findList();
+        model.addAttribute("subjectList", list);
+        model.addAttribute("termList", list);
         return "tea/scoreAnalysis";
     }
 
