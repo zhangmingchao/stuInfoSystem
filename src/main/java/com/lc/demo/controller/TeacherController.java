@@ -1,11 +1,14 @@
 package com.lc.demo.controller;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
 import com.lc.demo.mapper.ResultMapper;
 import com.lc.demo.mapper.TeacherMapper;
 import com.lc.demo.service.*;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +19,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,6 +84,8 @@ public class TeacherController {
         model.addAttribute("tea",tea);
         return "tea/updatetea";
     }
+    //导出
+
 
     //更新教师信息操作
     @PutMapping(value = "/tea/updateTeaMsg")
@@ -222,6 +232,25 @@ public class TeacherController {
         model.addAttribute("pageInfo",page);
         model.addAttribute("stuId",stuId);
         return "tea/tearesultlistbystuid";
+    }
+
+    @GetMapping(value = "/tea/downLoad{pn}")
+    public void downLoad(HttpServletResponse response,@PathVariable("pn") Integer pn, @Param("stuId") String stuId, Model model) throws IOException {
+        String fileName = "export.csv";
+        String[] head = new String[]{"学号","课程名","成绩"};
+        List<String[]> values = new ArrayList<>();
+//        List<Resultss> resultsses=resultssService.selectByStuId(stuId);
+        List<Resultss> resultsses=resultssService.getAllResult();
+        for (Resultss resultss : resultsses) {
+            String[] items = new String[]{resultss.getStuId(),resultss.getSubName(),String.valueOf(resultss.getResNum())};
+            values.add(items);
+        }
+        File file = CSVUtils.makeTempCSV(fileName, head, values);
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        CSVUtils.downloadFile(response, file);
     }
 
     //返回成绩修改页面从根据学生号查询的页面发送来的

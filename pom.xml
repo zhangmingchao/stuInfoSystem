@@ -141,6 +141,21 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
 
         </dependency>
+
+
+        <!-- 添加 Hutool 依赖 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
