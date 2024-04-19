@@ -307,6 +307,11 @@ public class TeacherController {
             String subTerm = list.get(0).getSubTerm();
             model.addAttribute("defaultSubNam",subName);
             model.addAttribute("defaultTeam",subTerm);
+            Map<String,Object> map = new HashMap<>();
+            map.put("fail",1000);
+            map.put("super",100);
+            map.put("pass",500);
+            model.addAttribute("data",map);
         }
 
         return "tea/scoreAnalysis";
