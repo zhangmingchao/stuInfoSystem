@@ -16,6 +16,49 @@
       th:href="@{/asserts/css/dashboard.css}"
       rel="stylesheet"
     />
+
+    <style>
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+        margin-bottom: 30px;
+      }
+
+      .search-bar label {
+        margin: 0;
+      }
+
+      .search-bar .search-bar__item {
+        display: flex;
+        align-items: center;
+        gap: 0 10px;
+        flex: 1;
+      }
+
+      .search-bar .search-bar__item .form-control {
+        flex: 1;
+        width: initial;
+      }
+
+      .main__content {
+        height: calc(100% - 68px);
+        padding: 20px 15px;
+      }
+
+      .chart-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      #chart {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
   </head>
 
   <body>
@@ -27,7 +70,45 @@
         ></div>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <h1>MAIN</h1>
+          <form method="get" th:action="@{/tea/scoreAnalysis}">
+            <div class="search-bar">
+              <div class="search-bar__item">
+                <label>学科：</label>
+                <select class="form-control">
+                  <option
+                    th:each="e:${subjectList}"
+                    th:selected="${defaultSubNam!=null}?${e.subName eq defaultSubNam}"
+                    th:value="${e.subName}"
+                    th:text="${e.subName}"
+                    name="subName"
+                  ></option>
+                </select>
+              </div>
+
+              <div class="search-bar__item">
+                <label>学期：</label>
+                <select class="form-control">
+                  <option
+                    th:each="e:${termList}"
+                    th:selected="${defaultTeam!=null}?${e.subTerm eq defaultTeam}"
+                    th:value="${e.subTerm}"
+                    th:text="${e.subTerm}"
+                    name="subTerm"
+                  ></option>
+                </select>
+              </div>
+
+              <button class="btn btn-outline-secondary" type="submit">
+                查询
+              </button>
+            </div>
+          </form>
+
+          <div class="main__content">
+            <div class="chart-wrapper">
+              <div id="chart"></div>
+            </div>
+          </div>
         </main>
       </div>
     </div>
@@ -52,8 +133,46 @@
       src="asserts/js/feather.min.js"
       th:src="@{/asserts/js/feather.min.js}"
     ></script>
+    <script
+      type="text/javascript"
+      src="asserts/js/echarts.min.js"
+      th:src="@{/asserts/js/echarts.min.js}"
+    ></script>
     <script>
       feather.replace();
+    </script>
+
+    <script th:if="${data != null}" th:inline="javascript">
+      const data = [[${data}]];
+      const chart = window.echarts.init(document.getElementById("chart"));
+
+      option = {
+        tooltip: {
+          trigger: "item",
+        },
+        legend: {
+            show: true,
+        },
+        series: [
+          {
+            type: "pie",
+            radius: "50%",
+            data: [
+              { value: data.fail, name: "不及格" },
+              { value: data.pass, name: "及格" },
+              { value: data.super, name: "优秀" },
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
+      };
+      chart.setOption(option);
     </script>
   </body>
 </html>
