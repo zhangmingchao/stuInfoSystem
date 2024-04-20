@@ -1,5 +1,7 @@
 package com.lc.demo.bean;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -12,12 +14,16 @@ import javax.validation.constraints.Min;
  **/
 public class Resultss {
     private int resId;
+    @ExcelProperty("学号")
     private String stuId;
+    @ExcelProperty("课程名")
     private String subName;
 
     @Max(value = 100,message = "成绩最大值不能超过100")
     @Min(value = 0,message = "成绩最小值不能小于0")
+    @ExcelProperty("成绩")
     private int    resNum;
+    @ExcelProperty("学期")
     private String resTerm;
 
     public Resultss() {

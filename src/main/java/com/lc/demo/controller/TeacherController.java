@@ -2,6 +2,8 @@ package com.lc.demo.controller;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
@@ -18,12 +20,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.*;
@@ -234,8 +238,8 @@ public class TeacherController {
         return "tea/tearesultlistbystuid";
     }
 
-    @GetMapping(value = "/tea/downLoad{pn}")
-    public void downLoad(HttpServletResponse response,@PathVariable("pn") Integer pn, @Param("stuId") String stuId, Model model) throws IOException {
+    @GetMapping(value = "/tea/downLoad")
+    public void downLoad(HttpServletResponse response, @Param("stuId") String stuId, Model model) throws IOException {
         String fileName = "export.csv";
         String[] head = new String[]{"学号","课程名","成绩"};
         List<String[]> values = new ArrayList<>();
@@ -251,6 +255,27 @@ public class TeacherController {
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         CSVUtils.downloadFile(response, file);
+    }
+
+    @GetMapping(value = "/tea/importFile")
+    public String importFile(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return "文件为空，请选择一个文件上传。";
+        }
+        try {
+            InputStream inputStream = file.getInputStream();
+            List<Resultss> lst = EasyExcel.read(inputStream) //调用read方法
+                    .excelType(ExcelTypeEnum.CSV)
+                    .head(Resultss.class) //对应导入的实体类
+                    .sheet(0) //导入数据的sheet页编号，0代表第一个sheet页，如果不填，则会导入所有sheet页的数据
+                    .headRowNumber(1) //列表头行数，1代表列表头有1行，第二行开始为数据行
+                    .doReadSync(); //开始读Excel，返回一个List<T>集合，继续后续入库操作
+
+            lst.forEach(item -> System.out.println(item.getResNum()));
+            return "文件上传成功： " + file.getOriginalFilename();
+        } catch (Exception e) {
+            return "文件上传失败： " + e.getMessage();
+        }
     }
 
     //返回成绩修改页面从根据学生号查询的页面发送来的
