@@ -1,12 +1,10 @@
 package com.lc.demo.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
-import com.lc.demo.service.ClassService;
-import com.lc.demo.service.ResultssService;
-import com.lc.demo.service.StudentService;
-import com.lc.demo.service.SubjectService;
+import com.lc.demo.service.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -177,5 +175,39 @@ public class StudentController {
             model.addAttribute("data",map);
         }
         return "stu/stuScoreAnalysis";
+    }
+
+    @Autowired
+    private StuBookService stuBookService;
+
+
+    @GetMapping("/stu/getBookInfo")
+    public String getBookInfo(Model model, @Param("subName") String subName,HttpSession httpSession){
+        Student studentInit=studentService.selectById((String) httpSession.getAttribute("loginUser"));
+        List<Subject> list = subjectService.findList();
+
+        List<Subject> subjectList = new ArrayList<>();
+        Set<String> subSet = new HashSet<>();
+        for (Subject subject : list) {
+            if (!subSet.contains(subject.getSubName())) {
+                subjectList.add(subject);
+                subSet.add(subject.getSubName());
+            }
+        }
+        model.addAttribute("subjectList", subjectList);
+        if (!ObjectUtils.isEmpty(list)) {
+            if (StringUtils.isEmpty(subName)) {
+                subName = list.get(0).getSubName();
+            }
+            Map<String,Object> map = new HashMap<>();
+            //需要查询数据库了
+            model.addAttribute("defaultSubNam",subName);
+            StuBook stuBook = stuBookService.getByStuIdAndSubName(studentInit.getStuId(), subName);
+            if (ObjectUtil.isEmpty(stuBook)) {
+                stuBook = new StuBook(studentInit.getStuId(),subName,"");
+            }
+            model.addAttribute("data",stuBook);
+        }
+        return "stu/book";
     }
 }
