@@ -273,6 +273,7 @@ public class TeacherController {
     }
 
     @GetMapping(value = "/tea/importFile")
+    @ResponseBody
     public String importFile(@RequestParam("file") MultipartFile file) throws IOException {
         List<Resultss> dataList = new ArrayList<>();
         Workbook workbook = new XSSFWorkbook(file.getInputStream());
