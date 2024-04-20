@@ -24,15 +24,16 @@ public class Resultss implements Serializable {
 @ExcelField(name = "学号", width = 500, order = 1)
     private String stuId;
 //    @ExcelProperty("课程名")
+@ExcelField(name = "课程名", width = 500, order = 2)
     private String subName;
 
     @Max(value = 100,message = "成绩最大值不能超过100")
     @Min(value = 0,message = "成绩最小值不能小于0")
 //    @ExcelProperty("成绩")
-    @ExcelField(name = "成绩", width = 500, order = 2)
+    @ExcelField(name = "成绩", width = 500, order = 3)
     private int    resNum;
 //    @ExcelProperty("学期")
-@ExcelField(name = "学期", width = 500, order = 3)
+@ExcelField(name = "学期", width = 500, order = 4)
     private String resTerm;
 
     public Resultss() {
