@@ -327,7 +327,6 @@
       document.querySelector("#ex").addEventListener("change", async (e) => {
         e.preventDefault();
         const file = e.target.files[0];
-        console.log(file);
         if (!file) return;
 
         const formData = new FormData();
@@ -335,15 +334,16 @@
 
         loadingModal.classList.add("d-flex");
         try {
-          await fetch("/tea/res/import", {
+          await fetch("/tea/importFile", {
             method: "POST",
             headers: {
               "Content-Type": "multipart/form-data",
             },
             body: formData,
           });
-          showMessage("导入成功，请刷新页面查看", "success");
+          showMessage("导入成功", "success");
           closeBtn.click();
+          location.href = "/stusys/tea/toteadmin/1";
         } catch (error) {
           showMessage("导入失败，请重试", "error");
         } finally {
