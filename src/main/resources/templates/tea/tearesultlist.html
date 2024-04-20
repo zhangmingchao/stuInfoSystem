@@ -332,15 +332,12 @@
         if (!file) return;
 
         const formData = new FormData();
-        formData.append("file", e.target.files[0]);
+        formData.append("file", file);
 
         loadingModal.classList.add("d-flex");
         try {
           const res = await fetch("/stusys/tea/importFile", {
             method: "POST",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
             body: formData,
           });
 
@@ -349,6 +346,7 @@
           closeBtn.click();
         } catch (error) {
           showMessage("导入失败，请重试", "danger");
+          e.target.value = "";
         } finally {
           loadingModal.classList.remove("d-flex");
         }
