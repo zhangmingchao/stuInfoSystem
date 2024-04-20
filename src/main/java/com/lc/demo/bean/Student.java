@@ -13,6 +13,8 @@ import javax.validation.constraints.Size;
 
 public class Student {
 
+    private String id;
+
     @Size(min=14,max = 14,message = "学号长度必须为14")
     private String stuId;
     @Size(min=1,max = 10,message = "名字长度必须在1-10之间")
@@ -85,7 +87,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "{" +
                 "stuId='" + stuId + '\'' +
                 ", stuName='" + stuName + '\'' +
                 ", stuPass='" + stuPass + '\'' +

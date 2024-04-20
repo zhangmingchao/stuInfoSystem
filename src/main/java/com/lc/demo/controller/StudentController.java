@@ -210,4 +210,12 @@ public class StudentController {
         }
         return "stu/book";
     }
+
+    @PostMapping("/stu/saveBook")
+    @ResponseBody
+    public String getBookInfo(Model model, @RequestBody StuBook stuBook,HttpSession httpSession){
+        Student studentInit=studentService.selectById((String) httpSession.getAttribute("loginUser"));
+        stuBookService.save(stuBook);
+        return "stu/book";
+    }
 }

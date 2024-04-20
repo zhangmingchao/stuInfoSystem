@@ -15,4 +15,9 @@ public class StuBookServiceImpl implements StuBookService {
     public StuBook getByStuIdAndSubName(String stuId, String subName) {
         return stuBookMapper.getByStuIdAndSubName(stuId,subName);
     }
+
+    @Override
+    public void save(StuBook stuBook) {
+        stuBookMapper.save(stuBook);
+    }
 }

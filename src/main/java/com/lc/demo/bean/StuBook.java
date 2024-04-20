@@ -1,6 +1,8 @@
 package com.lc.demo.bean;
 
-public class StuBook {
+import java.io.Serializable;
+
+public class StuBook implements Serializable {
 
     private String stuId;
 
