@@ -149,12 +149,15 @@
           trigger: "item",
         },
         legend: {
-            show: true,
+          show: true,
         },
         series: [
           {
             type: "pie",
             radius: "50%",
+            label: {
+              formatter: "{b}: ({d}%)",
+            },
             data: [
               { value: data.fail, name: "不及格" },
               { value: data.pass, name: "及格" },
