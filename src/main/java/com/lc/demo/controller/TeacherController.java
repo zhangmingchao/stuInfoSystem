@@ -13,9 +13,7 @@ import com.lc.demo.mapper.TeacherMapper;
 import com.lc.demo.service.*;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.ibatis.annotations.Param;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -284,7 +282,9 @@ public class TeacherController {
                 Resultss data = new Resultss();
                 data.setStuId(row.getCell(0).getStringCellValue());
                 data.setSubName(String.valueOf(row.getCell(1).getStringCellValue()));
-                String stringCellValue = row.getCell(2).getStringCellValue();
+//                String stringCellValue = row.getCell(2).getStringCellValue();
+                Cell nameCell = row.getCell(2);
+                String stringCellValue = new DataFormatter().formatCellValue(nameCell);
                 if (NumberUtil.isNumber(stringCellValue)) {
                     data.setResNum(Integer.valueOf(stringCellValue));
                 } else {
