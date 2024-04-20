@@ -272,7 +272,7 @@ public class TeacherController {
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName);
     }
 
-    @GetMapping(value = "/tea/importFile")
+    @PostMapping(value = "/tea/importFile")
     @ResponseBody
     public String importFile(@RequestParam("file") MultipartFile file) throws IOException {
         List<Resultss> dataList = new ArrayList<>();
