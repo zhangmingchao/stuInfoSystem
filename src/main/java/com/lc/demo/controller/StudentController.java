@@ -6,19 +6,20 @@ import com.lc.demo.bean.*;
 import com.lc.demo.service.ClassService;
 import com.lc.demo.service.ResultssService;
 import com.lc.demo.service.StudentService;
+import com.lc.demo.service.SubjectService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName StudentController
@@ -131,14 +132,37 @@ public class StudentController {
         return "stu/reslistbyterm";
     }
 
+    @Autowired
+    private SubjectService subjectService;
+
         //成绩分析
     @GetMapping(value = "/stu/stuScoreAnalysis")
-    public String toresdmin()
+    public String toresdmin(Model model,@Param("subName") String subName)
     {
-        // === 字段 ===
-        // 学科: subjectList
-        // 默认选择学科: defaultSubNam
-        // 图表数据: data
+        // 查看传入的参数
+        System.out.println("subName: " + subName);
+        List<Subject> list = subjectService.findList();
+
+        List<Subject> subjectList = new ArrayList<>();
+        Set<String> subSet = new HashSet<>();
+        for (Subject subject : list) {
+            if (!subSet.contains(subject.getSubName())) {
+                subjectList.add(subject);
+                subSet.add(subject.getSubName());
+            }
+        }
+        model.addAttribute("subjectList", subjectList);
+        if (!ObjectUtils.isEmpty(list)) {
+            if (StringUtils.isEmpty(subName)) {
+                subName = list.get(0).getSubName();
+            }
+            Map<String,Object> map = new HashMap<>();
+            //需要查询数据库了
+            model.addAttribute("defaultSubNam",subName);
+            map.put("term",Arrays.asList("18-2020-1","18-2020-2","18-2020-3","18-2020-4"));
+            map.put("score",Arrays.asList("100","50","30","90"));
+            model.addAttribute("data",map);
+        }
         return "stu/stuScoreAnalysis";
     }
 }
