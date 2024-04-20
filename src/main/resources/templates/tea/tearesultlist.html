@@ -92,7 +92,16 @@
                 >
                   查询
                 </button>
-                <button class="btn btn-primary" id="importButton">导入</button>
+                <button
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  type="button"
+                  id="importButton"
+                >
+                  导入
+                </button>
+                <button class="btn btn-success" id="importButton">导出</button>
               </div>
             </div>
           </form>
@@ -203,6 +212,49 @@
       </div>
     </div>
 
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">成绩上传</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label for="ex">excel文件上传</label>
+            <input type="file" id="ex" name="ex" accept=".xls,.xlsx" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary close-btn"
+              data-dismiss="modal"
+            >
+              关闭
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-loading">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap core JavaScript
 ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -232,15 +284,26 @@
       feather.replace();
     </script>
     <script>
-      $(".deleteBtn").click(function () {
-        //删除当前员工的
-        var i = confirm("你确定要删除吗?");
-        if (i == true) {
-          $("#deleteEmpForm").attr("action", $(this).attr("del_uri")).submit();
-          return false;
-        } else {
-          return false;
-        }
+      const closeBtn = document.querySelector(".close-btn");
+
+      document.querySelector("#ex").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        console.log(file);
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", e.target.files[0]);
+
+        fetch("/tea/res/import", {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        }).then((res) => {
+          console.log(res);
+          closeBtn.click();
+        });
       });
     </script>
   </body>
