@@ -515,4 +515,12 @@ INSERT INTO `teacher` VALUES ('3241', '张飞', '123', '1', '18876627222');
 INSERT INTO `teacher` VALUES ('5324', '曹操', '123', '1', '18876627223');
 
 
+CREATE TABLE `stu_book` (
+                            `stu_id` varchar(100) NOT NULL,
+                            `sub_name` varchar(100) NOT NULL,
+                            `content` varchar(255) DEFAULT NULL,
+                            PRIMARY KEY (`stu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
