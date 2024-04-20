@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 //import com.alibaba.excel.EasyExcel;
 //import com.alibaba.excel.support.ExcelTypeEnum;
+import cn.hutool.core.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
@@ -12,9 +13,14 @@ import com.lc.demo.mapper.TeacherMapper;
 import com.lc.demo.service.*;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -267,24 +273,38 @@ public class TeacherController {
     }
 
     @GetMapping(value = "/tea/importFile")
-    public String importFile(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return "文件为空，请选择一个文件上传。";
+    @ResponseBody
+    public String importFile(@RequestParam("file") MultipartFile file) throws IOException {
+        List<Resultss> dataList = new ArrayList<>();
+        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        for (Row row : sheet) {
+            if (row.getRowNum() > 0) { // Skip header row
+                Resultss data = new Resultss();
+                data.setStuId(row.getCell(0).getStringCellValue());
+                data.setSubName(String.valueOf(row.getCell(1).getStringCellValue()));
+                String stringCellValue = row.getCell(2).getStringCellValue();
+                if (NumberUtil.isNumber(stringCellValue)) {
+                    data.setResNum(Integer.valueOf(stringCellValue));
+                } else {
+                    data.setResNum(0);
+                }
+                data.setResTerm(row.getCell(3).getStringCellValue());
+                // ... more fields
+                dataList.add(data);
+            }
         }
-        try {
-            InputStream inputStream = file.getInputStream();
-//            List<Resultss> lst = EasyExcel.read(inputStream) //调用read方法
-//                    .excelType(ExcelTypeEnum.XLSX)
-//                    .head(Resultss.class) //对应导入的实体类
-//                    .sheet(0) //导入数据的sheet页编号，0代表第一个sheet页，如果不填，则会导入所有sheet页的数据
-//                    .headRowNumber(1) //列表头行数，1代表列表头有1行，第二行开始为数据行
-//                    .doReadSync(); //开始读Excel，返回一个List<T>集合，继续后续入库操作
-//
-//            lst.forEach(item -> System.out.println(item.getResNum()));
-            return "文件上传成功： " + file.getOriginalFilename();
-        } catch (Exception e) {
-            return "文件上传失败： " + e.getMessage();
+        List<Resultss> allResult = resultssService.getAllResult();
+        Set<String> exitSet = allResult.stream().map(item -> item.getSubName() + item.getResTerm() + item.getStuId()).collect(Collectors.toSet());
+        for (Resultss resultss : dataList) {
+            String key = resultss.getSubName() + resultss.getResTerm() + resultss.getStuId();
+            if (!exitSet.contains(key)) {
+                resultssService.addResult(resultss);
+            }
         }
+        workbook.close();
+        return "";
     }
 
     //返回成绩修改页面从根据学生号查询的页面发送来的
