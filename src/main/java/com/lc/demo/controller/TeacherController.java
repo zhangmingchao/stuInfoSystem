@@ -261,10 +261,10 @@ public class TeacherController {
 
         }
 //        File file = CSVUtils.makeTempCSV(fileName, head, values);
-//        response.setCharacterEncoding("utf-8");
-//        response.setContentType("application/octet-stream");
-//        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-//        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 //        CSVUtils.downloadFile(response, file);
     }
 
