@@ -2,8 +2,8 @@ package com.lc.demo.controller;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.support.ExcelTypeEnum;
+//import com.alibaba.excel.EasyExcel;
+//import com.alibaba.excel.support.ExcelTypeEnum;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lc.demo.bean.*;
@@ -239,33 +239,31 @@ public class TeacherController {
     @GetMapping(value = "/tea/downLoad")
     public void downLoad(HttpServletResponse response, @Param("stuId") String stuId, Model model) throws IOException {
         String fileName = "export.xlsx";
-        String[] head = new String[]{"学号","课程名","成绩"};
         File file = new File(fileName);
-        List<String[]> values = new ArrayList<>();
-//        List<Resultss> resultsses=resultssService.selectByStuId(stuId);
         List<Resultss> resultsses=resultssService.getAllResult();
-        for (Resultss resultss : resultsses) {
-            String[] items = new String[]{resultss.getStuId(),resultss.getSubName(),String.valueOf(resultss.getResNum())};
-            values.add(items);
-        }
-        OutputStream outputStream=response.getOutputStream();
-        try {
-            outputStream = new FileOutputStream(file);
-//这个实现方式非常简单直接，使用EasyExcel的write方法将查询到的数据进行处理，以流的形式写出即可
-            EasyExcel.write(outputStream,Resultss.class)//对应的导出实体类
-                    .excelType(ExcelTypeEnum.XLSX)//excel文件类型，包括CSV、XLS、XLSX
-                    .sheet("成绩列表")//导出sheet页名称
-                    .doWrite(resultsses); //查询获取的数据集合List<T>，转成excel
 
-        }catch (Exception e) {
+        ExcelExportUtil.export(response, resultsses, Resultss.class);
 
-        }
-//        File file = CSVUtils.makeTempCSV(fileName, head, values);
+    }
+
+
+    /**
+     * 设置响应结果
+     *
+     * @param response    响应结果对象
+     * @param rawFileName 文件名
+     * @throws UnsupportedEncodingException 不支持编码异常
+     */
+    private void setExcelResponseProp(HttpServletResponse response, String rawFileName) throws UnsupportedEncodingException {
+
+        //设置内容类型
+        response.setContentType("application/vnd.vnd.ms-excel");
+        //设置编码格式
         response.setCharacterEncoding("utf-8");
-        response.setContentType("application/octet-stream");
-        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-//        CSVUtils.downloadFile(response, file);
+        //设置导出文件名称（避免乱码）
+        String fileName = URLEncoder.encode(rawFileName.concat(".xlsx"), "UTF-8");
+        // 设置响应头
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName);
     }
 
     @GetMapping(value = "/tea/importFile")
@@ -275,14 +273,14 @@ public class TeacherController {
         }
         try {
             InputStream inputStream = file.getInputStream();
-            List<Resultss> lst = EasyExcel.read(inputStream) //调用read方法
-                    .excelType(ExcelTypeEnum.CSV)
-                    .head(Resultss.class) //对应导入的实体类
-                    .sheet(0) //导入数据的sheet页编号，0代表第一个sheet页，如果不填，则会导入所有sheet页的数据
-                    .headRowNumber(1) //列表头行数，1代表列表头有1行，第二行开始为数据行
-                    .doReadSync(); //开始读Excel，返回一个List<T>集合，继续后续入库操作
-
-            lst.forEach(item -> System.out.println(item.getResNum()));
+//            List<Resultss> lst = EasyExcel.read(inputStream) //调用read方法
+//                    .excelType(ExcelTypeEnum.XLSX)
+//                    .head(Resultss.class) //对应导入的实体类
+//                    .sheet(0) //导入数据的sheet页编号，0代表第一个sheet页，如果不填，则会导入所有sheet页的数据
+//                    .headRowNumber(1) //列表头行数，1代表列表头有1行，第二行开始为数据行
+//                    .doReadSync(); //开始读Excel，返回一个List<T>集合，继续后续入库操作
+//
+//            lst.forEach(item -> System.out.println(item.getResNum()));
             return "文件上传成功： " + file.getOriginalFilename();
         } catch (Exception e) {
             return "文件上传失败： " + e.getMessage();
