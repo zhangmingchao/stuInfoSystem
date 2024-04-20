@@ -59,4 +59,7 @@ public interface ResultMapper {
             "GROUP BY stu_id ORDER BY sum(res_num) DESC) w",
             "</script>"})
     List<Rank> selectRankByTermAndStuId(@Param("stuId") List<String> stuId,@Param("resTerm") String resTerm);
+
+    @Select("select * from result where stu_id=#{stuId} And sub_name=#{subName} order by res_term asc")
+    List<Resultss> findResultByStuIdAndSubName(@Param("stuId") String stuId, @Param("subName") String subName);
 }

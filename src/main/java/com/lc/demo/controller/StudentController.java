@@ -137,10 +137,12 @@ public class StudentController {
 
         //成绩分析
     @GetMapping(value = "/stu/stuScoreAnalysis")
-    public String toresdmin(Model model,@Param("subName") String subName)
+    public String toresdmin(Model model,@Param("subName") String subName,HttpSession httpSession)
     {
         // 查看传入的参数
         System.out.println("subName: " + subName);
+        Student studentInit=studentService.selectById((String) httpSession.getAttribute("loginUser"));
+
         List<Subject> list = subjectService.findList();
 
         List<Subject> subjectList = new ArrayList<>();
@@ -159,8 +161,19 @@ public class StudentController {
             Map<String,Object> map = new HashMap<>();
             //需要查询数据库了
             model.addAttribute("defaultSubNam",subName);
-            map.put("term",Arrays.asList("18-2020-1","18-2020-2","18-2020-3","18-2020-4"));
-            map.put("score",Arrays.asList("100","50","30","90"));
+            List<Resultss> resultList = resultssService.findResultByStuIdAndSubName(studentInit.getStuId(), subName);
+            List<String> termList = new ArrayList<>();
+            List<String> scoreList = new ArrayList<>();
+            Set<String> termSet = new HashSet<>();
+            for (Resultss resultss : resultList) {
+                if (!termSet.contains(resultss.getResTerm())) {
+                    termList.add(resultss.getResTerm());
+                    scoreList.add(String.valueOf(resultss.getResNum()));
+                    termSet.add(resultss.getResTerm());
+                }
+            }
+            map.put("term",termList);
+            map.put("score",scoreList);
             model.addAttribute("data",map);
         }
         return "stu/stuScoreAnalysis";

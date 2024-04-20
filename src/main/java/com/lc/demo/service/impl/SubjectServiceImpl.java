@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SubjectServiceImpl  implements SubjectService {
@@ -18,5 +19,10 @@ public class SubjectServiceImpl  implements SubjectService {
     public List<Subject> findList() {
         List<com.lc.demo.bean.Subject> list = subjectMapper.findList();
         return list;
+    }
+
+    @Override
+    public Map<String, Object> findListById(String stuId, String subName) {
+        return null;
     }
 }
