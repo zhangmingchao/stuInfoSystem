@@ -118,4 +118,9 @@ public class ResultssServiceImpl  implements ResultssService {
         map.put("super",sup);
         return map;
     }
+
+    @Override
+    public List<Resultss> findResultByStuIdAndSubName(String stuId, String subName) {
+        return resultMapper.findResultByStuIdAndSubName(stuId,subName);
+    }
 }

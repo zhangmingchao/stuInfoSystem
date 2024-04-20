@@ -34,4 +34,6 @@ public interface ResultssService {
     List<Rank> selectRankByTermAndStuClass(String resTerm,String stuClass);
 
     Map<String, Object> getChartData(String subName, String subTerm);
+
+    List<Resultss> findResultByStuIdAndSubName(String stuId, String subName);
 }
