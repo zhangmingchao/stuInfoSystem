@@ -304,7 +304,7 @@ public class TeacherController {
             }
         }
         workbook.close();
-        return "";
+        return "ok";
     }
 
     //返回成绩修改页面从根据学生号查询的页面发送来的
