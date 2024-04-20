@@ -77,7 +77,9 @@
         position: fixed;
         top: 50px;
         left: 50%;
+        z-index: 9999;
         transform: translateX(-50%);
+        padding-bottom: 15px;
       }
     </style>
   </head>
@@ -334,29 +336,36 @@
 
         loadingModal.classList.add("d-flex");
         try {
-          await fetch("/tea/importFile", {
+          const res = await fetch("/stusys/tea/importFile", {
             method: "POST",
             headers: {
               "Content-Type": "multipart/form-data",
             },
             body: formData,
           });
-          showMessage("导入成功", "success");
+
+          if (!res.ok) throw new Error("导入失败，请重试");
+          showMessage("导入成功，请刷新页面", "success");
           closeBtn.click();
-          location.href = "/stusys/tea/toteadmin/1";
         } catch (error) {
-          showMessage("导入失败，请重试", "error");
+          showMessage("导入失败，请重试", "danger");
         } finally {
           loadingModal.classList.remove("d-flex");
         }
       });
 
+      let index = 0;
       function showMessage(msg, type = "success") {
+        const id = `alert-${++index}`;
+        setTimeout(() => {
+          const target = document.querySelector(`#${id}`);
+          if (target) target.remove();
+        }, 1000);
         document.body.insertAdjacentHTML(
           "beforeend",
           `
-          <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-              <span>${msg}</span>
+          <div class="alert alert-${type} alert-dismissible fade show" role="alert" id="${id}">
+              <div style="padding-top: 3px; min-width: 200px">${msg}</div>
               <button
               type="button"
               class="close"
