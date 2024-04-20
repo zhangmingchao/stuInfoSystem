@@ -338,6 +338,9 @@
         try {
           const res = await fetch("/stusys/tea/importFile", {
             method: "POST",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
             body: formData,
           });
 
