@@ -130,4 +130,15 @@ public class StudentController {
         model.addAttribute("resTerm",resTerm);
         return "stu/reslistbyterm";
     }
+
+        //成绩分析
+    @GetMapping(value = "/stu/stuScoreAnalysis")
+    public String toresdmin()
+    {
+        // === 字段 ===
+        // 学科: subjectList
+        // 默认选择学科: defaultSubNam
+        // 图表数据: data
+        return "stu/stuScoreAnalysis";
+    }
 }
