@@ -1,9 +1,14 @@
 package com.lc.demo.bean;
 
-import com.alibaba.excel.annotation.ExcelProperty;
+//import com.alibaba.excel.annotation.ExcelIgnore;
+//import com.alibaba.excel.annotation.ExcelProperty;
+
+import com.lc.demo.controller.ExcelField;
+import com.lc.demo.controller.ExcelHeader;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 /**
  * @ClassName Result
@@ -12,18 +17,22 @@ import javax.validation.constraints.Min;
  * @Date 2021/1/9 11:24
  * @Version 1.0
  **/
-public class Resultss {
+@ExcelHeader(fileName = "导出文件.xlsx")
+public class Resultss implements Serializable {
     private int resId;
-    @ExcelProperty("学号")
+//    @ExcelProperty("学号")
+@ExcelField(name = "学号", width = 500, order = 1)
     private String stuId;
-    @ExcelProperty("课程名")
+//    @ExcelProperty("课程名")
     private String subName;
 
     @Max(value = 100,message = "成绩最大值不能超过100")
     @Min(value = 0,message = "成绩最小值不能小于0")
-    @ExcelProperty("成绩")
+//    @ExcelProperty("成绩")
+    @ExcelField(name = "成绩", width = 500, order = 2)
     private int    resNum;
-    @ExcelProperty("学期")
+//    @ExcelProperty("学期")
+@ExcelField(name = "学期", width = 500, order = 3)
     private String resTerm;
 
     public Resultss() {
@@ -79,7 +88,7 @@ public class Resultss {
 
     @Override
     public String toString() {
-        return "Result{" +
+        return "{" +
                 "resId=" + resId +
                 ", stuId='" + stuId + '\'' +
                 ", subName='" + subName + '\'' +
