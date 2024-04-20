@@ -49,6 +49,36 @@
         -webkit-animation: chartjs-render-animation 0.001s;
         animation: chartjs-render-animation 0.001s;
       }
+
+      .modal-dialog {
+        position: relative;
+      }
+
+      .modal-loading {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #333;
+        font-size: 24px;
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      .d-flex {
+        display: flex;
+      }
+
+      .alert {
+        position: fixed;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     </style>
   </head>
 
@@ -101,7 +131,7 @@
                 >
                   导入
                 </button>
-                <button class="btn btn-success" id="importButton">导出</button>
+                <button class="btn btn-success" id="exportButton">导出</button>
               </div>
             </div>
           </form>
@@ -233,7 +263,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <label for="ex">excel文件上传</label>
+            <label for="ex">excel文件上传：</label>
+            <br />
             <input type="file" id="ex" name="ex" accept=".xls,.xlsx" />
           </div>
           <div class="modal-footer">
@@ -248,9 +279,7 @@
         </div>
 
         <div class="modal-loading">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
+          <span>Loading...</span>
         </div>
       </div>
     </div>
@@ -285,8 +314,18 @@
     </script>
     <script>
       const closeBtn = document.querySelector(".close-btn");
+      const exportBtn = document.querySelector("#exportButton");
+      const loadingModal = document.querySelector(".modal-loading");
 
-      document.querySelector("#ex").addEventListener("change", (e) => {
+      exportBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const a = document.createElement("a");
+        a.href = "/stusys/tea/downLoad";
+        a.click();
+      });
+
+      document.querySelector("#ex").addEventListener("change", async (e) => {
+        e.preventDefault();
         const file = e.target.files[0];
         console.log(file);
         if (!file) return;
@@ -294,17 +333,42 @@
         const formData = new FormData();
         formData.append("file", e.target.files[0]);
 
-        fetch("/tea/res/import", {
-          method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: formData,
-        }).then((res) => {
-          console.log(res);
+        loadingModal.classList.add("d-flex");
+        try {
+          await fetch("/tea/res/import", {
+            method: "POST",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+          });
+          showMessage("导入成功，请刷新页面查看", "success");
           closeBtn.click();
-        });
+        } catch (error) {
+          showMessage("导入失败，请重试", "error");
+        } finally {
+          loadingModal.classList.remove("d-flex");
+        }
       });
+
+      function showMessage(msg, type = "success") {
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          `
+          <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+              <span>${msg}</span>
+              <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          `
+        );
+      }
     </script>
   </body>
 </html>
