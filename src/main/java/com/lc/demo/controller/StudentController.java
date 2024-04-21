@@ -211,12 +211,33 @@ public class StudentController {
         return "stu/book";
     }
 
-    @PostMapping("/stu/saveBook")
-    @ResponseBody
-    public String getBookInfo(Model model, @RequestBody StuBook stuBook,HttpSession httpSession){
+    @GetMapping("/stu/saveBook")
+    //@ResponseBody
+    public String getBookInfo(Model model, @Param("subName")String subName,@Param("content") String content,HttpSession httpSession){
         Student studentInit=studentService.selectById((String) httpSession.getAttribute("loginUser"));
+        StuBook stuBook = new StuBook();
+        stuBook.setSubName(subName);
         stuBook.setStuId(studentInit.getStuId());
-        stuBookService.save(stuBook);
+        stuBook.setContent(content);
+        StuBook exit = stuBookService.getByStuIdAndSubName(stuBook.getStuId(), stuBook.getSubName());
+        if (ObjectUtil.isEmpty(exit)) {
+            stuBookService.save(stuBook);
+        } else {
+            exit.setContent(content);
+            stuBookService.updateById(stuBook);
+        }
+        model.addAttribute("data",stuBook);
+        List<Subject> list = subjectService.findList();
+
+        List<Subject> subjectList = new ArrayList<>();
+        Set<String> subSet = new HashSet<>();
+        for (Subject subject : list) {
+            if (!subSet.contains(subject.getSubName())) {
+                subjectList.add(subject);
+                subSet.add(subject.getSubName());
+            }
+        }
+        model.addAttribute("subjectList", subjectList);
         return "stu/book";
     }
 }

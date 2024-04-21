@@ -20,4 +20,9 @@ public class StuBookServiceImpl implements StuBookService {
     public void save(StuBook stuBook) {
         stuBookMapper.save(stuBook);
     }
+
+    @Override
+    public void updateById(StuBook exit) {
+        stuBookMapper.updateById(exit);
+    }
 }

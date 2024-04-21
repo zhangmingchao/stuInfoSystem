@@ -8,4 +8,6 @@ public interface StuBookService {
     StuBook getByStuIdAndSubName(@Param("stuId") String stuId, @Param("subName")String subName);
 
     void save(StuBook stuBook);
+
+    void updateById(StuBook exit);
 }

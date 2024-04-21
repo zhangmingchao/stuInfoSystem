@@ -64,6 +64,10 @@
         height: 0;
         visibility: hidden;
       }
+
+      main {
+        height: calc(100vh - 100px);
+      }
     </style>
   </head>
 
@@ -96,7 +100,7 @@
 
           <form
             class="main__content"
-            method="POST"
+            method="get"
             th:action="@{/stu/saveBook}"
           >
             <select class="select-hidden" name="subName">
@@ -110,8 +114,8 @@
             <textarea
               class="textarea"
               name="content"
-              th:value="${data}"
-              th:text="${data}"
+              th:value="${data.content}"
+              th:text="${data.content}"
             ></textarea>
 
             <button class="btn btn-outline-primary" type="submit">保存</button>
