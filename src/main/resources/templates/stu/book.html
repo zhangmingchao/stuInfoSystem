@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>学生成绩信息管理系统</title>
+    <link
+      href="asserts/css/bootstrap.min.css"
+      th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}"
+      rel="stylesheet"
+    />
+    <link
+      href="asserts/css/dashboard.css"
+      th:href="@{/asserts/css/dashboard.css}"
+      rel="stylesheet"
+    />
+
+    <style>
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+        margin-bottom: 30px;
+      }
+
+      .search-bar label {
+        margin: 0;
+      }
+
+      .search-bar .search-bar__item {
+        display: flex;
+        align-items: center;
+        gap: 0 10px;
+        flex: 1;
+      }
+
+      .search-bar .search-bar__item .form-control {
+        flex: 1;
+        width: initial;
+      }
+
+      .main__content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px 0;
+        height: calc(100% - 68px);
+        padding: 20px 15px;
+      }
+
+      .textarea {
+        display: block;
+        width: 100%;
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+      }
+
+      .select-hidden {
+        display: block;
+        height: 0;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div th:replace="commons/teabar::topbar"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <div th:replace="commons/stubar::#sidebar(activeUri='book')"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <form method="get" th:action="@{/stu/getBookInfo}">
+            <div class="search-bar">
+              <div class="search-bar__item">
+                <label>学科：</label>
+                <select class="form-control select" name="subName">
+                  <option
+                    th:each="e:${subjectList}"
+                    th:selected="${defaultSubNam!=null}?${e.subName eq defaultSubNam}"
+                    th:value="${e.subName}"
+                    th:text="${e.subName}"
+                  ></option>
+                </select>
+              </div>
+
+              <button class="btn btn-outline-secondary" type="submit">
+                查询
+              </button>
+            </div>
+          </form>
+
+          <form
+            class="main__content"
+            method="POST"
+            th:action="@{/stu/saveBook}"
+          >
+            <select class="select-hidden" name="subName">
+              <option
+                th:each="e:${subjectList}"
+                th:selected="${defaultSubNam!=null}?${e.subName eq defaultSubNam}"
+                th:value="${e.subName}"
+                th:text="${e.subName}"
+              ></option>
+            </select>
+            <textarea
+              class="textarea"
+              name="content"
+              th:value="${data}"
+              th:text="${data}"
+            ></textarea>
+
+            <button class="btn btn-outline-primary" type="submit">保存</button>
+          </form>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const select = document.querySelector(".select");
+      const selectHidden = document.querySelector(".select-hidden");
+
+      select.addEventListener("change", (e) => {
+        selectHidden.value = e.target.value;
+      });
+    </script>
+
+    <script
+      type="text/javascript"
+      src="asserts/js/jquery-3.2.1.slim.min.js"
+      th:src="@{/webjars/jquery/3.3.1/jquery.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="asserts/js/popper.min.js"
+      th:src="@{/webjars/popper.js/1.11.1/dist/popper.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="asserts/js/bootstrap.min.js"
+      th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="asserts/js/feather.min.js"
+      th:src="@{/asserts/js/feather.min.js}"
+    ></script>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

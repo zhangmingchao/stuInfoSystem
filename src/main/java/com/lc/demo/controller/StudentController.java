@@ -215,6 +215,7 @@ public class StudentController {
     @ResponseBody
     public String getBookInfo(Model model, @RequestBody StuBook stuBook,HttpSession httpSession){
         Student studentInit=studentService.selectById((String) httpSession.getAttribute("loginUser"));
+        stuBook.setStuId(studentInit.getStuId());
         stuBookService.save(stuBook);
         return "stu/book";
     }
