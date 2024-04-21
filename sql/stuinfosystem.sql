@@ -519,8 +519,10 @@ CREATE TABLE `stu_book` (
                             `stu_id` varchar(100) NOT NULL,
                             `sub_name` varchar(100) NOT NULL,
                             `content` varchar(255) DEFAULT NULL,
-                            PRIMARY KEY (`stu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
 
 
 
