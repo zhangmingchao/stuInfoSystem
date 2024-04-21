@@ -237,6 +237,7 @@ public class StudentController {
                 subSet.add(subject.getSubName());
             }
         }
+        model.addAttribute("defaultSubNam",subName);
         model.addAttribute("subjectList", subjectList);
         return "stu/book";
     }
