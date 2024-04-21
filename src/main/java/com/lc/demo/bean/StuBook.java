@@ -62,7 +62,7 @@ public class StuBook implements Serializable {
 
     @Override
     public String toString() {
-        return "StuBook{" +
+        return "{" +
                 "id=" + id +
                 ", stuId='" + stuId + '\'' +
                 ", subName='" + subName + '\'' +
